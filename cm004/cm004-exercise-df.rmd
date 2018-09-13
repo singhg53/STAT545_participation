@@ -1,0 +1,76 @@
+---
+title: "cm004-exercise-df.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+---
+title: "Data Frame Exploration"
+output: 
+    html_document:
+        theme: cerulean
+        toc: true
+        keep_md: true
+---
+
+## LaTeX Equations in R Markdown
+
+Here is an equation:
+
+$$\alpha = 5 + 2$$
+
+Inline equation: $\alpha = 5 + 2$. 
+
+## Data frame exploration
+
+### Setting up
+
+First, load the `gapminder` R package. If you don't have it installed, run `install.packages("gapminder")` in the console first.
+
+```{r}
+library(gapminder)
+```
+
+### What is a data frame?
+
+It's tabular data. To get a sense of this, go ahead and print out the `gapminder` object (you might want to do this in the console!).
+
+### Exploration of data frames
+
+Let's explore `gapminder` with functions like `head`, `ncol`, `str`, `summary`.
+head(gapminder)
+str(gapminder)
+ncol(gapminder)
+summary(gapminder)
+
+### Extracting columns/"variables"
+
+Let's extract a column with `$`. Maybe compute its variance.
+
+```{r}
+gapminder$pop
+```
+
