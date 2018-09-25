@@ -104,6 +104,11 @@ gvsl + geom_point(aes(size = pop), alpha=0.2) +
 ```
 
 
+
+```{r}
+gvsl + geom_point(aes(size=pop, fill=continent), shape = 21, colour = "black", alpha = 0.5)
+```
+
 ## "Complete" plot
 
 Let's try plotting much of the data.
@@ -112,6 +117,11 @@ Let's try plotting much of the data.
 - facet by year
 - colour by continent
 
+```{r}
+gvsl + geom_point(aes(size=pop, colour=continent)) +
+  scale_size_area() +
+  facet_wrap(~ year)
+```
 
 
 # Continue from last time (geom exploration with `x` and `y` aesthetics)
