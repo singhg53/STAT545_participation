@@ -1,10 +1,16 @@
 cm006 Exercises: Exploring Geometric Objects
+output: github_document
 ================
 
 In this worksheet, we’ll be exploring various plot types (i.e.,
 geometric objects), only using the `x` and `y` aesthetics (and `group`).
 
 1.  To get started, load the `tidyverse` and `gapminder` R packages.
+
+
+
+library(gapminder)
+library(tidyverse)
 
 ## Scatterplot
 
