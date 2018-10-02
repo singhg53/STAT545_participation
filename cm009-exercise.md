@@ -138,21 +138,16 @@ lotr2 <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/da
     ## )
 
 ``` r
-lotr3 <- read_csv("https://github.com/jennybc/lotr-tidy/blob/master/data/The_Return_Of_The_King.csv")
+lotr3 <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Return_Of_The_King.csv")
 ```
 
     ## Parsed with column specification:
     ## cols(
-    ##   `<!DOCTYPE html>` = col_character()
+    ##   Film = col_character(),
+    ##   Race = col_character(),
+    ##   Female = col_integer(),
+    ##   Male = col_integer()
     ## )
-
-    ## Warning in rbind(names(probs), probs_f): number of columns of result is not
-    ## a multiple of vector length (arg 1)
-
-    ## Warning: 26 parsing failures.
-    ## row # A tibble: 5 x 5 col     row col   expected  actual   file                                      expected   <int> <chr> <chr>     <chr>    <chr>                                     actual 1    46 <NA>  1 columns 4 colum… 'https://github.com/jennybc/lotr-tidy/bl… file 2    73 <NA>  1 columns 3 colum… 'https://github.com/jennybc/lotr-tidy/bl… row 3    81 <NA>  1 columns 3 colum… 'https://github.com/jennybc/lotr-tidy/bl… col 4    85 <NA>  1 columns 3 colum… 'https://github.com/jennybc/lotr-tidy/bl… expected 5    89 <NA>  1 columns 3 colum… 'https://github.com/jennybc/lotr-tidy/bl…
-    ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-    ## See problems(...) for more details.
 
 ## `gather()`
 
@@ -165,16 +160,167 @@ can more easily crunch the numbers).
 1.  Combine the three LOTR untidy tables (`lotr1`, `lotr2`, `lotr3`) to
     a single untidy table by stacking them.
 
+You want data in tidy format when you are doing computations and untidy
+format when you want it in tables
+
+``` r
+lotr_untidy<- bind_rows(lotr1, lotr2, lotr3)
+
+lotr_untidy
+```
+
+    ## # A tibble: 9 x 4
+    ##   Film                       Race   Female  Male
+    ##   <chr>                      <chr>   <int> <int>
+    ## 1 The Fellowship Of The Ring Elf      1229   971
+    ## 2 The Fellowship Of The Ring Hobbit     14  3644
+    ## 3 The Fellowship Of The Ring Man         0  1995
+    ## 4 The Two Towers             Elf       331   513
+    ## 5 The Two Towers             Hobbit      0  2463
+    ## 6 The Two Towers             Man       401  3589
+    ## 7 The Return Of The King     Elf       183   510
+    ## 8 The Return Of The King     Hobbit      2  2673
+    ## 9 The Return Of The King     Man       268  2459
+
 2.  Convert to tidy. Also try this by specifying columns as a range, and
-    with the `contains()` function.
+    with the `contains()`
+function.
+
+<!-- end list -->
+
+``` r
+gather(lotr_untidy, key = "Gender", value="Word", Female, Male) #value will name the new columns
+```
+
+    ## # A tibble: 18 x 4
+    ##    Film                       Race   Gender  Word
+    ##    <chr>                      <chr>  <chr>  <int>
+    ##  1 The Fellowship Of The Ring Elf    Female  1229
+    ##  2 The Fellowship Of The Ring Hobbit Female    14
+    ##  3 The Fellowship Of The Ring Man    Female     0
+    ##  4 The Two Towers             Elf    Female   331
+    ##  5 The Two Towers             Hobbit Female     0
+    ##  6 The Two Towers             Man    Female   401
+    ##  7 The Return Of The King     Elf    Female   183
+    ##  8 The Return Of The King     Hobbit Female     2
+    ##  9 The Return Of The King     Man    Female   268
+    ## 10 The Fellowship Of The Ring Elf    Male     971
+    ## 11 The Fellowship Of The Ring Hobbit Male    3644
+    ## 12 The Fellowship Of The Ring Man    Male    1995
+    ## 13 The Two Towers             Elf    Male     513
+    ## 14 The Two Towers             Hobbit Male    2463
+    ## 15 The Two Towers             Man    Male    3589
+    ## 16 The Return Of The King     Elf    Male     510
+    ## 17 The Return Of The King     Hobbit Male    2673
+    ## 18 The Return Of The King     Man    Male    2459
+
+``` r
+gather(lotr_untidy, key = "Gender", value="Word", Female:Male)
+```
+
+    ## # A tibble: 18 x 4
+    ##    Film                       Race   Gender  Word
+    ##    <chr>                      <chr>  <chr>  <int>
+    ##  1 The Fellowship Of The Ring Elf    Female  1229
+    ##  2 The Fellowship Of The Ring Hobbit Female    14
+    ##  3 The Fellowship Of The Ring Man    Female     0
+    ##  4 The Two Towers             Elf    Female   331
+    ##  5 The Two Towers             Hobbit Female     0
+    ##  6 The Two Towers             Man    Female   401
+    ##  7 The Return Of The King     Elf    Female   183
+    ##  8 The Return Of The King     Hobbit Female     2
+    ##  9 The Return Of The King     Man    Female   268
+    ## 10 The Fellowship Of The Ring Elf    Male     971
+    ## 11 The Fellowship Of The Ring Hobbit Male    3644
+    ## 12 The Fellowship Of The Ring Man    Male    1995
+    ## 13 The Two Towers             Elf    Male     513
+    ## 14 The Two Towers             Hobbit Male    2463
+    ## 15 The Two Towers             Man    Male    3589
+    ## 16 The Return Of The King     Elf    Male     510
+    ## 17 The Return Of The King     Hobbit Male    2673
+    ## 18 The Return Of The King     Man    Male    2459
+
+``` r
+gather(lotr_untidy, key = "Gender", value="Word", contains("ale"))
+```
+
+    ## # A tibble: 18 x 4
+    ##    Film                       Race   Gender  Word
+    ##    <chr>                      <chr>  <chr>  <int>
+    ##  1 The Fellowship Of The Ring Elf    Female  1229
+    ##  2 The Fellowship Of The Ring Hobbit Female    14
+    ##  3 The Fellowship Of The Ring Man    Female     0
+    ##  4 The Two Towers             Elf    Female   331
+    ##  5 The Two Towers             Hobbit Female     0
+    ##  6 The Two Towers             Man    Female   401
+    ##  7 The Return Of The King     Elf    Female   183
+    ##  8 The Return Of The King     Hobbit Female     2
+    ##  9 The Return Of The King     Man    Female   268
+    ## 10 The Fellowship Of The Ring Elf    Male     971
+    ## 11 The Fellowship Of The Ring Hobbit Male    3644
+    ## 12 The Fellowship Of The Ring Man    Male    1995
+    ## 13 The Two Towers             Elf    Male     513
+    ## 14 The Two Towers             Hobbit Male    2463
+    ## 15 The Two Towers             Man    Male    3589
+    ## 16 The Return Of The King     Elf    Male     510
+    ## 17 The Return Of The King     Hobbit Male    2673
+    ## 18 The Return Of The King     Man    Male    2459
 
 3.  Try again (bind and tidy the three untidy data frames), but without
     knowing how many tables there are originally.
-    
       - The additional work here does not require any additional tools
         from the tidyverse, but instead uses a `do.call` from base R – a
         useful tool in data analysis when the number of “items” is
         variable/unknown, or quite large.
+
+<!-- end list -->
+
+``` r
+lotr_list <- list(lotr1, lotr2, lotr3)
+
+lotr_list
+```
+
+    ## [[1]]
+    ## # A tibble: 3 x 4
+    ##   Film                       Race   Female  Male
+    ##   <chr>                      <chr>   <int> <int>
+    ## 1 The Fellowship Of The Ring Elf      1229   971
+    ## 2 The Fellowship Of The Ring Hobbit     14  3644
+    ## 3 The Fellowship Of The Ring Man         0  1995
+    ## 
+    ## [[2]]
+    ## # A tibble: 3 x 4
+    ##   Film           Race   Female  Male
+    ##   <chr>          <chr>   <int> <int>
+    ## 1 The Two Towers Elf       331   513
+    ## 2 The Two Towers Hobbit      0  2463
+    ## 3 The Two Towers Man       401  3589
+    ## 
+    ## [[3]]
+    ## # A tibble: 3 x 4
+    ##   Film                   Race   Female  Male
+    ##   <chr>                  <chr>   <int> <int>
+    ## 1 The Return Of The King Elf       183   510
+    ## 2 The Return Of The King Hobbit      2  2673
+    ## 3 The Return Of The King Man       268  2459
+
+``` r
+do.call(bind_rows, lotr_list)
+```
+
+    ## # A tibble: 9 x 4
+    ##   Film                       Race   Female  Male
+    ##   <chr>                      <chr>   <int> <int>
+    ## 1 The Fellowship Of The Ring Elf      1229   971
+    ## 2 The Fellowship Of The Ring Hobbit     14  3644
+    ## 3 The Fellowship Of The Ring Man         0  1995
+    ## 4 The Two Towers             Elf       331   513
+    ## 5 The Two Towers             Hobbit      0  2463
+    ## 6 The Two Towers             Man       401  3589
+    ## 7 The Return Of The King     Elf       183   510
+    ## 8 The Return Of The King     Hobbit      2  2673
+    ## 9 The Return Of The King     Man       268  2459
 
 ## `spread()`
 
@@ -201,8 +347,35 @@ lotr_tidy <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/maste
 
 Get word counts across “Race”. Then try “Gender”.
 
+``` r
+spread(lotr_tidy, key = "Race", value = "Words")
+```
+
+    ## # A tibble: 6 x 5
+    ##   Film                       Gender   Elf Hobbit   Man
+    ##   <chr>                      <chr>  <int>  <int> <int>
+    ## 1 The Fellowship Of The Ring Female  1229     14     0
+    ## 2 The Fellowship Of The Ring Male     971   3644  1995
+    ## 3 The Return Of The King     Female   183      2   268
+    ## 4 The Return Of The King     Male     510   2673  2459
+    ## 5 The Two Towers             Female   331      0   401
+    ## 6 The Two Towers             Male     513   2463  3589
+
 Now try combining race and gender. Use `unite()` from `tidyr` instead of
 `paste()`.
+
+``` r
+lotr_tidy %>% 
+  unite(Race_Gender, Race, Gender) %>% 
+  spread(key = "Race_Gender", value = "Words")
+```
+
+    ## # A tibble: 3 x 7
+    ##   Film   Elf_Female Elf_Male Hobbit_Female Hobbit_Male Man_Female Man_Male
+    ##   <chr>       <int>    <int>         <int>       <int>      <int>    <int>
+    ## 1 The F…       1229      971            14        3644          0     1995
+    ## 2 The R…        183      510             2        2673        268     2459
+    ## 3 The T…        331      513             0        2463        401     3589
 
 ## Other `tidyr` goodies
 
@@ -217,6 +390,10 @@ Check out the Examples in the documentation to explore the following.
 `unite` and `separate`.
 
 `uncount` (as the opposite of `dplyr::count()`)
+
+``` r
+#opposite of count
+```
 
 `drop_na` and `replace_na`
 
