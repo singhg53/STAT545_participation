@@ -131,9 +131,6 @@ Now try combining race and gender. Use `unite()` from `tidyr` instead of `paste(
 lotr_tidy %>% 
   unite(Race_Gender, Race, Gender) %>% 
   spread(key = "Race_Gender", value = "Words")
-
-lotr_tidy %>% 
-  mutate( x = rnorm)
 ```
 
 ## Other `tidyr` goodies
